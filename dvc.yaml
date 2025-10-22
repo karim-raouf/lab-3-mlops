@@ -1,0 +1,38 @@
+stages:
+  preprocess:
+    cmd: python preprocess.py
+    deps:
+      - preprocess.py
+      - data/raw/heart.csv
+    params:
+      - preprocess
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+
+  train:
+    cmd: python train.py
+    deps:
+      - train.py
+      - data/processed/train.csv
+    params:
+      - train
+      - preprocess.target_column
+      - preprocess.random_state
+    outs:
+      - models/model.pkl
+      - models/feature_importance.csv
+
+  tune:
+    cmd: python tune.py
+    deps:
+      - tune.py
+      - data/processed/train.csv
+      - data/processed/test.csv
+    params:
+      - tune
+      - preprocess.target_column
+      - preprocess.random_state
+    outs:
+      - models/best_model.pkl
+      - models/tuning_results.txt
