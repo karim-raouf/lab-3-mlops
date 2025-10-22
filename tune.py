@@ -2,6 +2,8 @@
 Hyperparameter Tuning Script
 Uses MLflow nested runs to test different hyperparameter combinations
 """
+from dotenv import load_dotenv 
+load_dotenv()
 import pandas as pd
 import numpy as np
 import mlflow

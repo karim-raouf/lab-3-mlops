@@ -1,0 +1,98 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python preprocess.py
+    deps:
+    - path: data/raw/heart.csv
+      hash: md5
+      md5: 6481ed154d5b8ff83d7c09007aaa6ed0
+      size: 38114
+    - path: preprocess.py
+      hash: md5
+      md5: 63ac23cb715e795d9a8d738adc7f06b1
+      size: 3844
+    params:
+      params.yaml:
+        preprocess:
+          input_path: data/raw/heart.csv
+          output_dir: data/processed
+          target_column: target
+          test_size: 0.2
+          random_state: 42
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: d4bfdf05389bd15256920a4bee355cc7
+      size: 52680
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 0ef7fca794a79312dbcad987fb2eda66
+      size: 210532
+  train:
+    cmd: python train.py
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 0ef7fca794a79312dbcad987fb2eda66
+      size: 210532
+    - path: train.py
+      hash: md5
+      md5: ffbaff829cf5275f09f9489bd536f6fd
+      size: 4362
+    params:
+      params.yaml:
+        preprocess.random_state: 42
+        preprocess.target_column: target
+        train:
+          model_dir: models
+          model_params:
+            n_estimators: 100
+            max_depth: 10
+    outs:
+    - path: models/feature_importance.csv
+      hash: md5
+      md5: 54d4d52c526a5fd49e0a09f19351b97c
+      size: 368
+    - path: models/model.pkl
+      hash: md5
+      md5: 21969985f9430c2dad1ca55f8cee8c24
+      size: 1179369
+  tune:
+    cmd: python tune.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: d4bfdf05389bd15256920a4bee355cc7
+      size: 52680
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 0ef7fca794a79312dbcad987fb2eda66
+      size: 210532
+    - path: tune.py
+      hash: md5
+      md5: bab88aadb7df29b699dc5ac986aa1f25
+      size: 7111
+    params:
+      params.yaml:
+        preprocess.random_state: 42
+        preprocess.target_column: target
+        tune:
+          n_estimators:
+          - 50
+          - 100
+          - 200
+          - 300
+          max_depth:
+          - 5
+          - 10
+          - 15
+          - 20
+    outs:
+    - path: models/best_model.pkl
+      hash: md5
+      md5: baf4f58b17c4d6e418e25d3bb5e5b263
+      size: 588489
+    - path: models/tuning_results.txt
+      hash: md5
+      md5: 897805e23ff30a599a9b5c756042f5bc
+      size: 86

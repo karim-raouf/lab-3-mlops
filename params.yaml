@@ -16,5 +16,5 @@ tune:
   max_depth: [5, 10, 15, 20]
 
 mlflow:
-  tracking_uri: "file:./mlruns"  # Will be updated to DagsHub URI
-  experiment_name: "lab3_classification_pipeline"
+  tracking_uri: "https://dagshub.com/karim-raouf/lab-3-mlops.mlflow"  # Will be updated to DagsHub URI
+  experiment_name: "lab-3-mlops"

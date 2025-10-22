@@ -2,6 +2,9 @@
 Model Training Script
 Trains a baseline model and logs metrics with MLflow
 """
+from dotenv import load_dotenv 
+load_dotenv()
+
 import pandas as pd
 import numpy as np
 import mlflow

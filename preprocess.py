@@ -2,6 +2,8 @@
 Data Preprocessing Script
 Loads raw data, performs cleaning and feature engineering, and splits into train/test sets.
 """
+from dotenv import load_dotenv 
+load_dotenv()
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
